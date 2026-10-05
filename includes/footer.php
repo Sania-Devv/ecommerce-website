@@ -1,46 +1,38 @@
 
 <footer class="footer">
 
-    <!-- Newsletter / Deals -->
-    <div class="cta bg-image bg-dark pt-4 pb-5 mb-0"
-        style="background-image: url(assets/images/demos/demo-4/bg-5.jpg);">
+   
+<!-- Newsletter / Deals -->
+<div class="cta bg-image bg-dark pt-4 pb-5 mb-0"
+    style="background-image: url('assets/images/banners/3cols/newsletter4.jpg');">
 
-        <div class="container">
-            <div class="row justify-content-center">
+    <div class="container">
 
-                <div class="col-sm-10 col-md-8 col-lg-6">
+        <div class="row justify-content-center">
 
-                    <div class="cta-heading text-center">
-                        <h3 class="cta-title text-white">
-                            Get The Latest Deals
-                        </h3>
+            <div class="col-sm-10 col-md-8 col-lg-6">
 
-                        <p class="cta-desc text-white">
-                            and receive <span class="font-weight-normal">$20 coupon</span>
-                            for first shopping
-                        </p>
-                    </div>
+                <div class="cta-heading text-center">
 
-                    <form action="#">
-                        <div class="input-group input-group-round">
+                    <h3 class="cta-title text-white">
+                        ShopMart — Your Style, Your Choice
+                    </h3>
 
-                            <input
-                                type="email"
-                                class="form-control form-control-white"
-                                placeholder="Enter your Email Address"
-                                aria-label="Email Address"
-                                required
-                            >
+                    <p class="cta-desc text-white">
+                        Discover quality fashion and everyday essentials at great prices.
+                    </p>
 
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">
-                                    <span>Subscribe</span>
-                                    <i class="icon-long-arrow-right"></i>
-                                </button>
-                            </div>
+                </div>
 
-                        </div>
-                    </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+                    
 
                 </div>
 

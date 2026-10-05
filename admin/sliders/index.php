@@ -126,46 +126,6 @@ $stmt->close();
 
     <style>
 
-        .search-wrapper {
-            width: 180px;
-        }
-
-        .search-input {
-            width: 100%;
-        }
-
-        @media (max-width: 400px) {
-
-            .search-wrapper {
-                width: 130px;
-                padding-left: 6px !important;
-                padding-right: 6px !important;
-            }
-
-            .search-input {
-                font-size: 13px;
-                padding: 6px 4px;
-            }
-
-        }
-
-        @media (max-width: 340px) {
-
-            .search-wrapper {
-                width: 115px;
-            }
-
-            .search-input {
-                font-size: 12px;
-                padding: 5px 3px;
-            }
-
-            .d-flex.justify-content-between {
-                gap: 8px !important;
-            }
-
-        }
-
         @media (max-width: 576px) {
 
             .slider-header {
@@ -225,19 +185,6 @@ $stmt->close();
 
             </div>
 
-
-            <!-- SEARCH -->
-            <div class="d-flex align-items-center gap-3 border rounded ps-4">
-
-                <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Search sliders..."
-                    style="width: 220px;"
-                    id="sliderSearch"
-                >
-
-            </div>
 
         </div>
 
@@ -657,45 +604,6 @@ $stmt->close();
 
 <!-- Material Dashboard -->
 <script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
-
-
-<!-- SLIDER SEARCH -->
-<script>
-
-    const searchInput =
-        document.getElementById('sliderSearch');
-
-    searchInput.addEventListener('keyup', function () {
-
-        const searchValue =
-            this.value.toLowerCase();
-
-        const rows =
-            document.querySelectorAll(
-                '#sliderTableBody tr'
-            );
-
-
-        rows.forEach(function (row) {
-
-            const sliderName =
-                row.innerText.toLowerCase();
-
-            if (sliderName.includes(searchValue)) {
-
-                row.style.display = '';
-
-            } else {
-
-                row.style.display = 'none';
-
-            }
-
-        });
-
-    });
-
-</script>
 
 
 <!-- DELETE SLIDER MODAL -->

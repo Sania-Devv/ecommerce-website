@@ -1079,7 +1079,70 @@ style>
 
 <?php endif; ?><!-- End .container -->
 <!-- Deals -->
-            <div class="container">
+<style>
+    .deal-col .deal {
+        position: relative;
+        overflow: hidden;
+        min-height: 400px;
+    }
+
+    .deal-col .deal-product-image {
+        position: absolute;
+        right: 25px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 45%;
+        max-width: 280px;
+        height: 280px;
+        object-fit: contain;
+        z-index: 1;
+    }
+
+    .deal-col .deal-top,
+    .deal-col .deal-content,
+    .deal-col .deal-bottom {
+        position: relative;
+        z-index: 2;
+        width: 55%;
+    }
+
+    .deal-col .deal-top {
+        padding-right: 10px;
+    }
+
+    .deal-col .deal-content {
+        padding-right: 10px;
+    }
+
+    @media (max-width: 767px) {
+        .deal-col .deal {
+            min-height: 500px;
+        }
+
+        .deal-col .deal-product-image {
+                position: absolute;
+                right: 25px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 250px;
+                height: 250px;
+                object-fit: contain;
+                z-index: 1;
+
+                border: 1px solid #e5e5e5;
+                border-radius: 8px;
+                padding: 10px;
+                background: #fff;
+            }
+
+        .deal-col .deal-top,
+        .deal-col .deal-content,
+        .deal-col .deal-bottom {
+            width: 100%;
+        }
+    }
+</style>
+<div class="container">
 
     <div class="heading text-center mb-3">
         <h2 class="title">Deals & Outlet</h2>
@@ -1092,12 +1155,30 @@ style>
 
             <?php foreach ($dealProducts as $index => $deal): ?>
 
+               <?php
+                $dealImage = '';
+
+                if (!empty($deal['image'])) {
+                    $dealImage = 'uploads/products/' . $deal['image'];
+                }
+
+                $originalPrice = (float) $deal['price'];
+                $discount = (float) $deal['discount_percentage'];
+
+                $dealPrice = $originalPrice - (
+                    $originalPrice * $discount / 100
+                );
+                ?>
+
                 <div class="col-lg-6 deal-col">
 
-                    <div
-                        class="deal"
-                        style="background-image: url('assets/images/demos/demo-4/deal/bg-<?php echo $index + 1; ?>.jpg');"
-                    >
+                     <div class="deal">
+
+                        <img
+                            src="<?php echo htmlspecialchars($dealImage); ?>"
+                            alt="<?php echo htmlspecialchars($deal['name']); ?>"
+                            class="deal-product-image"
+                        >
 
                         <div class="deal-top">
 
@@ -1118,37 +1199,22 @@ style>
                         <div class="deal-content">
 
                             <h3 class="product-title">
-
                                 <a
                                     href="product-detail.php?id=<?php echo (int) $deal['id']; ?>"
                                 >
                                     <?php echo htmlspecialchars($deal['name']); ?>
                                 </a>
-
                             </h3>
 
                             <div class="product-price">
 
-                              <?php
-$originalPrice = (float) $deal['price'];
-$discount = (float) $deal['discount_percentage'];
+                                <span class="old-price">
+                                    Rs. <?php echo number_format($originalPrice, 2); ?>
+                                </span>
 
-$dealPrice = $originalPrice - (
-    $originalPrice * $discount / 100
-);
-?>
-
-<div class="product-price">
-
-    <span class="old-price">
-        Rs. <?php echo number_format($originalPrice, 2); ?>
-    </span>
-
-    <span class="new-price">
-        Rs. <?php echo number_format($dealPrice, 2); ?>
-    </span>
-
-</div>
+                                <span class="new-price">
+                                    Rs. <?php echo number_format($dealPrice, 2); ?>
+                                </span>
 
                             </div>
 
@@ -1164,14 +1230,14 @@ $dealPrice = $originalPrice - (
 
                         <div class="deal-bottom">
 
-                           <div
-    class="deal-countdown <?php echo $index === 0
-        ? 'daily-deal-countdown'
-        : 'offer-countdown'; ?>"
-    data-until="<?php echo htmlspecialchars(
-        date('Y-m-d H:i:s', strtotime($deal['deal_end']))
-    ); ?>"
-></div>
+                            <div
+                                class="deal-countdown <?php echo $index === 0
+                                    ? 'daily-deal-countdown'
+                                    : 'offer-countdown'; ?>"
+                                data-until="<?php echo htmlspecialchars(
+                                    date('Y-m-d H:i:s', strtotime($deal['deal_end']))
+                                ); ?>"
+                            ></div>
 
                         </div>
 
@@ -1190,6 +1256,13 @@ $dealPrice = $originalPrice - (
         <?php endif; ?>
 
     </div>
+
+</div>
+</div>
+
+</div>
+</div>
+
 
     <div class="more-container text-center mt-1 mb-5">
 

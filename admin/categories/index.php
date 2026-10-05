@@ -572,7 +572,7 @@ $stmt->close();
     searchInput.addEventListener('keyup', function () {
 
         const searchValue =
-            this.value.toLowerCase();
+            this.value.toLowerCase().trim();
 
         const rows =
             document.querySelectorAll(
@@ -583,7 +583,11 @@ $stmt->close();
         rows.forEach(function (row) {
 
             const categoryName =
-                row.innerText.toLowerCase();
+                row.querySelector('td:first-child')
+                   .innerText
+                   .toLowerCase()
+                   .trim();
+
 
             if (categoryName.includes(searchValue)) {
 
@@ -600,7 +604,6 @@ $stmt->close();
     });
 
 </script>
-
 
 <!-- DELETE CATEGORY MODAL -->
 <script>

@@ -268,6 +268,7 @@ function getDealPrice($price, $discount)
                     class="form-control"
                     placeholder="Search deals..."
                     style="width: 220px;"
+                    id="dealSearch"
                 >
 
             </div>
@@ -388,7 +389,7 @@ function getDealPrice($price, $discount)
                         </thead>
 
 
-                        <tbody>
+                        <tbody id="dealsTableBody">
 
 
                         <?php if (empty($deals)): ?>
@@ -587,10 +588,12 @@ function getDealPrice($price, $discount)
                                         <p class="text-xs font-weight-bold mb-0">
 
                                             <?php
+
                                             echo date(
                                                 'd M Y',
                                                 strtotime($deal['deal_end'])
                                             );
+
                                             ?>
 
                                         </p>
@@ -598,10 +601,12 @@ function getDealPrice($price, $discount)
                                         <p class="text-xs text-secondary mb-0">
 
                                             <?php
+
                                             echo date(
                                                 'h:i A',
                                                 strtotime($deal['deal_end'])
                                             );
+
                                             ?>
 
                                         </p>
@@ -772,6 +777,45 @@ function getDealPrice($price, $discount)
 <script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
 
 
+<!-- DEAL SEARCH -->
+
+<script>
+
+    const dealSearch =
+        document.getElementById('dealSearch');
+
+    dealSearch.addEventListener('keyup', function () {
+
+        const searchValue =
+            this.value.toLowerCase().trim();
+
+        const rows =
+            document.querySelectorAll(
+                '#dealsTableBody tr'
+            );
+
+        rows.forEach(function (row) {
+
+            const dealText =
+                row.innerText.toLowerCase();
+
+            if (dealText.includes(searchValue)) {
+
+                row.style.display = '';
+
+            } else {
+
+                row.style.display = 'none';
+
+            }
+
+        });
+
+    });
+
+</script>
+
+
 <!-- REMOVE DEAL MODAL SCRIPT -->
 
 <script>
@@ -783,7 +827,8 @@ function getDealPrice($price, $discount)
         'show.bs.modal',
         function (event) {
 
-            const button = event.relatedTarget;
+            const button =
+                event.relatedTarget;
 
             const productId =
                 button.getAttribute('data-product-id');

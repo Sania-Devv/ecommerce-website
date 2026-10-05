@@ -218,6 +218,7 @@ $stmt->close();
 
                 <input
                     type="text"
+                    id="productSearch"
                     class="form-control"
                     placeholder="Search products..."
                     style="width: 220px;"
@@ -266,7 +267,10 @@ $stmt->close();
 
                 <div class="table-responsive p-0">
 
-                    <table class="table align-items-center mb-0">
+                    <table
+                        class="table align-items-center mb-0"
+                        id="productsTable"
+                    >
 
                         <thead>
 
@@ -305,7 +309,7 @@ $stmt->close();
                         </thead>
 
 
-                        <tbody>
+                        <tbody id="productsTableBody">
 
 
                         <?php if (empty($products)): ?>
@@ -748,6 +752,43 @@ $stmt->close();
 <!-- Material Dashboard -->
 
 <script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
+
+
+<!-- PRODUCT SEARCH -->
+
+<script>
+
+    const productSearch =
+        document.getElementById('productSearch');
+
+    productSearch.addEventListener('keyup', function () {
+
+        const searchValue =
+            this.value.toLowerCase().trim();
+
+        const rows =
+            document.querySelectorAll('#productsTableBody tr');
+
+        rows.forEach(function (row) {
+
+            const productText =
+                row.innerText.toLowerCase();
+
+            if (productText.includes(searchValue)) {
+
+                row.style.display = '';
+
+            } else {
+
+                row.style.display = 'none';
+
+            }
+
+        });
+
+    });
+
+</script>
 
 
 <!-- DELETE MODAL SCRIPT -->
