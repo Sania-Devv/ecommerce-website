@@ -1,61 +1,118 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
-function sendOrderEmail($toEmail, $customerName, $orderNumber, $orderTotal ){
-    $mail = new PHPMailer(true);
-    try{
-        // SMTp seetting 
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'clothwear829@gmail.com';
-        $mail->Password   = 'aere mwgl nnuq kyxc';
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
 
-        // sender
-        $mail->setFrom(
-            'clothwear829@gmail.com',
-            'ClothWear'
+/*
+|--------------------------------------------------------------------------
+| Load Environment Variables
+|--------------------------------------------------------------------------
+*/
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
+
+/*
+|--------------------------------------------------------------------------
+| SMTP Configuration Helper
+|--------------------------------------------------------------------------
+*/
+
+function configureSMTP(PHPMailer $mail)
+{
+    $mail->isSMTP();
+
+    $mail->Host = $_ENV['SMTP_HOST'];
+    $mail->SMTPAuth = true;
+
+    $mail->Username = $_ENV['SMTP_USERNAME'];
+    $mail->Password = $_ENV['SMTP_PASSWORD'];
+
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = (int) $_ENV['SMTP_PORT'];
+
+    $mail->setFrom(
+        $_ENV['SMTP_USERNAME'],
+        'ClothWear'
+    );
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Order Confirmation Email
+|--------------------------------------------------------------------------
+*/
+
+function sendOrderEmail(
+    $toEmail,
+    $customerName,
+    $orderNumber,
+    $orderTotal
+) {
+
+    $mail = new PHPMailer(true);
+
+    try {
+
+        configureSMTP($mail);
+
+        // Receiver
+        $mail->addAddress(
+            $toEmail,
+            $customerName
         );
-        // receiver
-        $mail->addAddress($toEmail,$customerName);
+
         // Email
         $mail->isHTML(true);
-        $mail->Subject = 'ClothWear - Order Confirmation';
+
+        $mail->Subject =
+            'ClothWear - Order Confirmation';
+
         $mail->Body = "
             <h2>Thank you for your order!</h2>
 
-            <p>Hello " . htmlspecialchars($customerName) . ",</p>
+            <p>
+                Hello " . htmlspecialchars($customerName) . ",
+            </p>
 
-            <p>Your ClothWear order has been successfully placed.</p>
+            <p>
+                Your ClothWear order has been successfully placed.
+            </p>
 
-            <p><strong>Order Number:</strong> "
-            . htmlspecialchars($orderNumber) .
-            "</p>
+            <p>
+                <strong>Order Number:</strong>
+                " . htmlspecialchars($orderNumber) . "
+            </p>
 
-            <p><strong>Total Amount:</strong> Rs. "
-            . number_format($orderTotal, 2) .
-            "</p>
+            <p>
+                <strong>Total Amount:</strong>
+                Rs. " . number_format($orderTotal, 2) . "
+            </p>
 
-            <p>We will process your order shortly.</p>
+            <p>
+                We will process your order shortly.
+            </p>
 
-            <p>Thank you for shopping with ClothWear.</p>
+            <p>
+                Thank you for shopping with ClothWear.
+            </p>
         ";
 
         $mail->send();
 
         return true;
 
-    }
-     catch (Exception $e) {
+    } catch (Exception $e) {
 
         return false;
     }
-
 }
+
 
 /*
 |--------------------------------------------------------------------------
@@ -69,24 +126,12 @@ function sendOrderStatusEmail(
     $orderNumber,
     $orderStatus
 ) {
+
     $mail = new PHPMailer(true);
 
     try {
 
-        // SMTP settings
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'clothwear829@gmail.com';
-        $mail->Password   = 'aere mwgl nnuq kyxc';
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
-
-        // Sender
-        $mail->setFrom(
-            'clothwear829@gmail.com',
-            'ClothWear'
-        );
+        configureSMTP($mail);
 
         // Receiver
         $mail->addAddress(
@@ -97,7 +142,8 @@ function sendOrderStatusEmail(
         // Email
         $mail->isHTML(true);
 
-        $mail->Subject = 'ClothWear - Order Status Update';
+        $mail->Subject =
+            'ClothWear - Order Status Update';
 
         $statusText = ucfirst($orderStatus);
 
@@ -131,50 +177,49 @@ function sendOrderStatusEmail(
 
         return true;
 
-    }catch (Exception $e) {
-    die("Status Email Error: " . $e->getMessage());
+    } catch (Exception $e) {
+
+        return false;
+    }
 }
-}
+
+
+/*
+|--------------------------------------------------------------------------
+| Admin Order Cancellation Email
+|--------------------------------------------------------------------------
+*/
+
 function sendAdminOrderCancellationEmail(
     $orderNumber,
     $customerName,
     $customerEmail
 ) {
+
     $mail = new PHPMailer(true);
 
     try {
 
-        // SMTP settings
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'clothwear829@gmail.com';
-        $mail->Password   = 'aere mwgl nnuq kyxc';
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
-
-        // Sender
-        $mail->setFrom(
-            'clothwear829@gmail.com',
-            'ClothWear'
-        );
+        configureSMTP($mail);
 
         // Admin receiver
         $mail->addAddress(
-            'clothwear829@gmail.com',
+            $_ENV['SMTP_USERNAME'],
             'ClothWear Admin'
         );
 
         // Email
         $mail->isHTML(true);
 
-        $mail->Subject = 'ClothWear - Order Cancelled by Customer';
+        $mail->Subject =
+            'ClothWear - Order Cancelled by Customer';
 
         $mail->Body = "
             <h2>Order Cancelled by Customer</h2>
 
             <p>
-                A customer has cancelled an order from the ClothWear website.
+                A customer has cancelled an order from the
+                ClothWear website.
             </p>
 
             <p>
@@ -211,46 +256,46 @@ function sendAdminOrderCancellationEmail(
         return false;
     }
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| Admin New Order Email
+|--------------------------------------------------------------------------
+*/
+
 function sendAdminNewOrderEmail(
     $orderNumber,
     $customerName,
     $customerEmail,
     $orderTotal
 ) {
+
     $mail = new PHPMailer(true);
 
     try {
 
-        // SMTP settings
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'clothwear829@gmail.com';
-        $mail->Password   = 'aere mwgl nnuq kyxc';
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        configureSMTP($mail);
 
-        // Sender
-        $mail->setFrom(
-            'clothwear829@gmail.com',
-            'ClothWear'
-        );
-
-        // Admin email
+        // Admin receiver
         $mail->addAddress(
-            'clothwear829@gmail.com',
+            $_ENV['SMTP_USERNAME'],
             'ClothWear Admin'
         );
 
         // Email
         $mail->isHTML(true);
 
-        $mail->Subject = 'ClothWear - New Order Received';
+        $mail->Subject =
+            'ClothWear - New Order Received';
 
         $mail->Body = "
             <h2>New Order Received</h2>
 
-            <p>A new order has been placed on ClothWear.</p>
+            <p>
+                A new order has been placed on the
+                ClothWear website.
+            </p>
 
             <p>
                 <strong>Order Number:</strong>
@@ -272,7 +317,10 @@ function sendAdminNewOrderEmail(
                 Rs. " . number_format($orderTotal, 2) . "
             </p>
 
-            <p>Please check the admin dashboard for complete order details.</p>
+            <p>
+                Please check the admin dashboard for complete
+                order details.
+            </p>
         ";
 
         $mail->send();
