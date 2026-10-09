@@ -642,18 +642,10 @@ if ($isLoggedIn) {
 
                         </div>
 
-                    <?php else: ?>
-
-                        <a href="login.php">
-                            Sign In
-                        </a>
-
-                        <span>&nbsp;/&nbsp;</span>
-
-                        <a href="register.php">
-                            Sign Up
-                        </a>
-
+                    <?php else: ?> 
+                        <li> 
+                            <a href="login.php"> Sign In / Sign Up </a> 
+                    </li> 
                     <?php endif; ?>
 
                 </div>
@@ -1467,13 +1459,6 @@ if ($isLoggedIn) {
                             </li>
 
 
-                            <li>
-
-                                <a href="register.php">
-                                    Sign Up
-                                </a>
-
-                            </li>
 
                         <?php endif; ?>
 

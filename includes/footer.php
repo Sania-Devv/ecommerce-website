@@ -189,11 +189,7 @@
 
                         <ul class="widget-list">
 
-                            <li>
-                                <a href="login.php">
-                                    Sign In
-                                </a>
-                            </li>
+                          
 
                             <li>
                                 <a href="cart.php">

@@ -707,7 +707,7 @@ if (count($relatedProducts) < 4) {
 
                         <div class="product-price">
 
-                            $
+                            Rs.
                             <?php
                             echo number_format(
                                 (float) $product['price'],
@@ -1090,7 +1090,7 @@ if (count($relatedProducts) < 4) {
                                             Price:
                                         </strong>
 
-                                        $
+                                        Rs.
                                         <?php
                                         echo number_format(
                                             (float) $product['price'],
@@ -1294,7 +1294,7 @@ if (count($relatedProducts) < 4) {
 
                         <div class="product-price">
 
-                            $
+                         Rs.
                             <?php
                             echo number_format(
                                 (float) $relatedProduct['price'],
